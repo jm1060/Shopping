@@ -51,8 +51,11 @@ def drop(amount, total, items, cart):
         drop_item = input("Is there anything else you would like to drop?")
     
   
-def add_off_sale_cart(total, quantity, items, sale_items, store_item, cart):
+def add_off_sale_cart(total, quantity, items, sale_items, store_item):
     total+=(items[store_item] - (sale_items[store_item] * items[store_item])) * quantity
+
+def drop_off_sale(total, drop_quantity,items, sales_items, store_item):
+    total-=(items[store_item] - (sales_items[store_item] * items[store_item])) * drop_quantity
 
 def checkout(amount, total, items, cart):
     print("Time for you checkout your items. Time to print out your receipt")
