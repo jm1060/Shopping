@@ -32,10 +32,10 @@ def shopping(amount):
         store_item = input("Is there anything else you would like to buy? (type 'Done' to finish): ").lower()
     print("Seems like you are ready to check out. Let's check the total")
     if(total > amount):
-        drop(amount, total, items, cart)
+        drop(amount, total, items, sale_items, cart)
     checkout(amount, total, items, cart)
         
-def drop(amount, total, items, cart):
+def drop(amount, total, items, sale_items, cart):
     print("Seems like you need to drop an item")
     
     drop_item=input("Which item would like to drop?")
@@ -46,8 +46,10 @@ def drop(amount, total, items, cart):
         while(drop_quantity > cart[drop_item]):
             drop_quantity = input("You don't have that much "+ str(drop_item) + " in your cart. Try again.")
         cart[drop_item] -= drop_quantity
-        for j in range(drop_quantity):
-            total -= items[drop_item]
+        if(drop_item in sale_items):
+            drop_off_sale(total, drop_quantity, items, sale_items, drop_item)
+        else:
+            total -= items[drop_item] * float(drop_quantity) 
         drop_item = input("Is there anything else you would like to drop?")
     
   
