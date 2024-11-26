@@ -1,7 +1,10 @@
 import random
 def shopping(amount):
-    items={'jackets':25.99, 'sweater':15.50, 't-shirts':13.69, 'jeans': 16.49, 'sweatpants':20.99,'sneakers':14.79, 
+    items={'jackets':25.99, 'sweater':15.50, 't-shirts':13.69, 'jeans': 16.49, 'sweatpants':20.99,'sneakers':14.79, 'glasses':25.25,
+    'long-sleeve-shirts':14.69, 'vests':19.49, 'short-sleeve-jackets':20.79,  
     'pencils':0.99, 'pens': 1.99, 'eraser':1.59, 'notebooks':2.99, 'binders':5.99, 'folders': 2.59, 'markers':2.00}
+    sale_items={'jackets':0.1, 'sweater':0.15, 't-shirts': 0.1, 'jeans':0.20, 'sweatpants': 0.1, 'sneakers':0.25, 'glasses':0.1, 
+    'long-sleeve-shirts':0.1, 'vests':0.16, 'short-sleeve-jackets':0.225}
     cart=dict()
     total = 0
     store_item = input("What would you like to buy? Enter item (or type 'Done' to finish):").lower()
@@ -21,7 +24,11 @@ def shopping(amount):
             cart[store_item] += quantity 
         else: 
             cart[store_item] = quantity 
-        total += items[store_item] * float(quantity) 
+        if(store_item in sale_items):
+            print("You have a sale item")
+            add_off_sale_cart(total, quantity, items, sale_items, store_item, cart)
+        else:
+            total += items[store_item] * float(quantity) 
         store_item = input("Is there anything else you would like to buy? (type 'Done' to finish): ").lower()
     print("Seems like you are ready to check out. Let's check the total")
     if(total > amount):
@@ -43,9 +50,12 @@ def drop(amount, total, items, cart):
             total -= items[drop_item]
         drop_item = input("Is there anything else you would like to drop?")
     
-    
+  
+def add_off_sale_cart(total, quantity, items, sale_items, store_item, cart):
+    total+=(items[store_item] - (sale_items[store_item] * items[store_item])) * quantity
+
 def checkout(amount, total, items, cart):
-    print("Time for you checkout your items.")
+    print("Time for you checkout your items. Time to print out your receipt")
     item_total = 0
     for cart_key in cart.keys():
         item_total += cart[cart_key] * items[cart_key]
@@ -54,9 +64,6 @@ def checkout(amount, total, items, cart):
     
     amount -= total
     print("You are left with "+str(amount)+ " Thank you for shopping")
-
-
-
 
 
 def main():
