@@ -68,13 +68,13 @@ def checkout(amount, items, cart, sale_items):
             item_total += (cart[cart_key] * (items[cart_key] - (items[cart_key] * sale_items[cart_key])))
         else:    
             item_total += cart[cart_key] * items[cart_key]
-        print(str(cart[cart_key]) + " " + str(cart_key) + " "+ str(item_total))
+        print(str(cart[cart_key]) + " " + str(cart_key) + " "+ str(round(item_total, 2)))
         total += item_total
         item_total = 0
     
     amount -= total
-    print("Your total for purchase: "+str(total))
-    print("You are left with "+str(amount)+ " Thank you for shopping")
+    print("Your total for purchase: "+str(round(total, 2)))
+    print("You are left with "+str(round(amount, 2))+ " Thank you for shopping")
 
 
 def main():
