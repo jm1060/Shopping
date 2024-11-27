@@ -15,16 +15,25 @@ def shopping(amount):
         else:
             if(section == 'clothes'):
                 shop_clothes(total, clothes_items, sale_items, cart)
+            elif(section == 'supplies'):
+                shop_school_supplies(total, clothes_items, school_supplies, cart)
  
         section = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
     print("Seems like you are ready to check out. Let's check the total")
     if(total > amount):
-        drop(amount, total, items, sale_items, cart)
-    checkout(amount, items, cart, sale_items)
+        drop_section = input("What section would you like to buy from? Enter section (or type 'Done' to finish):")
+        while drop_section != 'done' or (total > amount):
+            if(drop_section == 'clothes'):
+                drop(amount, total, clothes_items,  sale_items, cart)
+            elif(drop_section == 'supplies'):
+                drop(amount, total, school_supplies, sale_items, cart)
+    checkout(amount, clothes_items, school_supplies, cart, sale_items)
 
 def shop_clothes(total, clothes_items, sale_items, cart):
     cloth_item = input("What clothes would you like to buy from? Enter item (or type 'Done' to finish):").lower()
     while True:
+        if cloth_item == 'done':
+            break
         while cloth_item not in clothes_items: 
             cloth_item = input("This item is not in the store. Try again: ").lower() 
         quantity = input("How many would you like to buy? ") 
@@ -42,11 +51,14 @@ def shop_clothes(total, clothes_items, sale_items, cart):
             add_off_sale_cart(total, quantity, clothes_items, sale_items, cloth_item)
         else:
             total += clothes_items[cloth_item] * float(quantity) 
-        cloth_item = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
+        cloth_item = input("Is there anything clothes else you would like to buy from? (type 'Done' to finish): ").lower()
 
 def shop_school_supplies(total, school_supplies, sale_items, cart):
     supply_item = input("What school supplies would you like to buy from? Enter item (or type 'Done' to finish):").lower()
+    
     while True:
+        if supply_item == 'done':
+            break
         while supply_item not in school_supplies: 
             supply_item = input("This item is not in the store. Try again: ").lower() 
         quantity = input("How many would you like to buy? ") 
@@ -64,7 +76,7 @@ def shop_school_supplies(total, school_supplies, sale_items, cart):
             add_off_sale_cart(total, quantity, school_supplies, sale_items, supply_item)
         else:
             total += school_supplies[supply_item] * float(quantity) 
-        supply_item = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
+        supply_item = input("Is there anything supplies else you would like to buy from? (type 'Done' to finish): ").lower()
 
 
 def drop(amount, total, items, sale_items, cart):
@@ -91,15 +103,21 @@ def add_off_sale_cart(total, quantity, items, sale_items, store_item):
 def drop_off_sale(total, drop_quantity,items, sales_items, store_item):
     total-=(items[store_item] - (sales_items[store_item] * items[store_item])) * drop_quantity
 
-def checkout(amount, items, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, cart, sale_items):
     print("Time for you checkout your items. Time to print out your receipt")
     item_total = 0
     total = 0
     for cart_key in cart.keys():
         if(cart_key in sale_items):
-            item_total += (cart[cart_key] * (items[cart_key] - (items[cart_key] * sale_items[cart_key])))
-        else:    
-            item_total += cart[cart_key] * items[cart_key]
+            if(cart_key in clothes_items):
+                item_total += (cart[cart_key] * (clothes_items[cart_key] - (clothes_items[cart_key] * sale_items[cart_key])))
+            elif(cart_key in school_supplies):
+                item_total += (cart[cart_key] * (school_supplies[cart_key] - (school_supplies[cart_key] * sale_items[cart_key])))
+        else:
+            if(cart_key in clothes_items):
+                item_total += cart[cart_key] * clothes_items[cart_key]
+            elif(cart_key in school_supplies):
+                item_total += cart[cart_key] * school_supplies[cart_key]
         print(str(cart[cart_key]) + " " + str(cart_key) + " "+ str(round(item_total, 2)))
         total += item_total
         item_total = 0
