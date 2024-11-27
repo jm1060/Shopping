@@ -44,6 +44,28 @@ def shop_clothes(total, clothes_items, sale_items, cart):
             total += clothes_items[cloth_item] * float(quantity) 
         cloth_item = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
 
+def shop_school_supplies(total, school_supplies, sale_items, cart):
+    supply_item = input("What school supplies would you like to buy from? Enter item (or type 'Done' to finish):").lower()
+    while True:
+        while supply_item not in school_supplies: 
+            supply_item = input("This item is not in the store. Try again: ").lower() 
+        quantity = input("How many would you like to buy? ") 
+        try: 
+            quantity = float(quantity) # Convert quantity to float 
+        except ValueError: 
+            print("Please enter a valid number for quantity.") 
+            continue 
+        if supply_item in cart: 
+            cart[supply_item] += quantity 
+        else: 
+            cart[supply_item] = quantity 
+        if(supply_item in sale_items):
+            print("You have a sale item")
+            add_off_sale_cart(total, quantity, school_supplies, sale_items, supply_item)
+        else:
+            total += school_supplies[supply_item] * float(quantity) 
+        supply_item = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
+
 
 def drop(amount, total, items, sale_items, cart):
     print("Seems like you need to drop an item")
