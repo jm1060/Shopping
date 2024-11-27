@@ -26,14 +26,14 @@ def shopping(amount):
             cart[store_item] = quantity 
         if(store_item in sale_items):
             print("You have a sale item")
-            add_off_sale_cart(total, quantity, items, sale_items, store_item, cart)
+            add_off_sale_cart(total, quantity, items, sale_items, store_item)
         else:
             total += items[store_item] * float(quantity) 
         store_item = input("Is there anything else you would like to buy? (type 'Done' to finish): ").lower()
     print("Seems like you are ready to check out. Let's check the total")
     if(total > amount):
         drop(amount, total, items, sale_items, cart)
-    checkout(amount, total, items, cart)
+    checkout(amount, items, cart, sale_items)
         
 def drop(amount, total, items, sale_items, cart):
     print("Seems like you need to drop an item")
@@ -59,15 +59,21 @@ def add_off_sale_cart(total, quantity, items, sale_items, store_item):
 def drop_off_sale(total, drop_quantity,items, sales_items, store_item):
     total-=(items[store_item] - (sales_items[store_item] * items[store_item])) * drop_quantity
 
-def checkout(amount, total, items, cart):
+def checkout(amount, items, cart, sale_items):
     print("Time for you checkout your items. Time to print out your receipt")
     item_total = 0
+    total = 0
     for cart_key in cart.keys():
-        item_total += cart[cart_key] * items[cart_key]
+        if(cart_key in sale_items):
+            item_total += (cart[cart_key] * (items[cart_key] - (items[cart_key] * sale_items[cart_key])))
+        else:    
+            item_total += cart[cart_key] * items[cart_key]
         print(str(cart[cart_key]) + " " + str(cart_key) + " "+ str(item_total))
+        total += item_total
         item_total = 0
     
     amount -= total
+    print("Your total for purchase: "+str(total))
     print("You are left with "+str(amount)+ " Thank you for shopping")
 
 
