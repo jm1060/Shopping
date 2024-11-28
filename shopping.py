@@ -16,7 +16,7 @@ def shopping(amount):
             if(section == 'clothes'):
                 shop_clothes(total, clothes_items, sale_items, cart)
             elif(section == 'supplies'):
-                shop_school_supplies(total, clothes_items, school_supplies, cart)
+                shop_school_supplies(total, school_supplies, sale_items, cart)
  
         section = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
     print("Seems like you are ready to check out. Let's check the total")
