@@ -1,137 +1,156 @@
 import random
 def shopping(amount):
-    clothes_items={'jackets':25.99, 'sweater':15.50, 't-shirts':13.69, 'jeans': 16.49, 'sweatpants':20.99,'sneakers':14.79, 'glasses':25.25,
-    'long-sleeve-shirts':14.69, 'vests':19.49, 'short-sleeve-jackets':20.79}
-    school_supplies={'pencils':0.99, 'pens': 1.99, 'eraser':1.59, 'notebooks':2.99, 'binders':5.99, 'folders': 2.59, 'markers':2.00}
-    sale_items={'jackets':0.1, 'sweater':0.15, 't-shirts': 0.1, 'jeans':0.20, 'sweatpants': 0.1, 'sneakers':0.25, 'glasses':0.1, 
-    'long-sleeve-shirts':0.1, 'vests':0.16, 'short-sleeve-jackets':0.225}
-    cart=dict()
+    # Data initialization
+    clothes_items = {
+        'jackets': 25.99, 'sweater': 15.50, 't-shirts': 13.69, 'jeans': 16.49, 
+        'sweatpants': 20.99, 'sneakers': 14.79, 'glasses': 25.25,
+        'long-sleeve-shirts': 14.69, 'vests': 19.49, 'short-sleeve-jackets': 20.79
+    }
+    school_supplies = {
+        'pencils': 0.99, 'pens': 1.99, 'eraser': 1.59, 'notebooks': 2.99, 
+        'binders': 5.99, 'folders': 2.59, 'markers': 2.00
+    }
+    appliances = {
+        'refrigerator': 599.99, 'air-conditioning': 479.99, 'microwave': 84.99,
+        'dishwasher': 349.79, 'fan': 51.99, 'tv': 1089.99
+    }
+    sale_items = {
+        'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
+        'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
+        'long-sleeve-shirts': 0.1, 'vests': 0.16, 'short-sleeve-jackets': 0.225,
+        'binders': 0.10, 'refrigerator': 0.25, 'air-conditioning': 0.15,
+        'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30
+    }
+    cart = {}
     total = 0
-    section = input("What section would you like to buy from? Enter item (or type 'Done' to finish):").lower()
-    while True: 
-        
-        if section == 'done': 
-            break 
-        else:
-            if(section == 'clothes'):
-                shop_clothes(total, clothes_items, sale_items, cart)
-            elif(section == 'supplies'):
-                shop_school_supplies(total, school_supplies, sale_items, cart)
- 
-        section = input("Is there anything section else you would like to buy from? (type 'Done' to finish): ").lower()
-    print("Seems like you are ready to check out. Let's check the total")
-    if(total > amount):
-        drop_section = input("What section would you like to buy from? Enter section (or type 'Done' to finish):")
-        while drop_section != 'done' or (total > amount):
-            if(drop_section == 'clothes'):
-                drop(amount, total, clothes_items,  sale_items, cart)
-            elif(drop_section == 'supplies'):
-                drop(amount, total, school_supplies, sale_items, cart)
-    checkout(amount, clothes_items, school_supplies, cart, sale_items)
 
-def shop_clothes(total, clothes_items, sale_items, cart):
-    cloth_item = input("What clothes would you like to buy from? Enter item (or type 'Done' to finish):").lower()
-    while True:
-        if cloth_item == 'done':
-            break
-        while cloth_item not in clothes_items: 
-            cloth_item = input("This item is not in the store. Try again: ").lower() 
-        quantity = input("How many would you like to buy? ") 
-        try: 
-            quantity = float(quantity) # Convert quantity to float 
-        except ValueError: 
-            print("Please enter a valid number for quantity.") 
-            continue 
-        if cloth_item in cart: 
-            cart[cloth_item] += quantity 
-        else: 
-            cart[cloth_item] = quantity 
-        if(cloth_item in sale_items):
-            print("You have a sale item")
-            add_off_sale_cart(total, quantity, clothes_items, sale_items, cloth_item)
+    # Shopping process
+    section = input("What section would you like to buy from? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
+    while section != 'done': 
+        if section == 'clothes':
+            total = shop_clothes(total, clothes_items, sale_items, cart)
+        elif section == 'supplies':
+            total = shop_school_supplies(total, school_supplies, sale_items, cart)
+        elif section == 'appliances':
+            total = shop_appliances(total, appliances, sale_items, cart)
         else:
-            total += clothes_items[cloth_item] * float(quantity) 
-        cloth_item = input("Is there anything clothes else you would like to buy from? (type 'Done' to finish): ").lower()
+            print("Invalid section. Please choose from clothes, supplies, or appliances.")
+        section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
+    print(f"Total after shopping is {round(total, 2)}, Budget is {amount}")
+
+    # Check if total exceeds budget
+    if total > amount:
+        print(f"Your total is {round(total, 2)}, which exceeds your budget of {round(amount, 2)}.")
+        drop_section = None  # Initialize drop_section outside the loop
+        while total > amount:
+            drop_section = input("Which section would you like to remove items from (clothes, supplies, appliances)? Or type 'done' to stop: ").lower()
+            if drop_section == 'done':
+                print("You decided to stop dropping items.")
+                break
+            elif drop_section == 'clothes':
+                total = drop(amount, total, clothes_items, sale_items, cart)
+            elif drop_section == 'supplies':
+                total = drop(amount, total, school_supplies, sale_items, cart)
+            elif drop_section == 'appliances':
+                total = drop(amount, total, appliances, sale_items, cart)
+            else:
+                print("Invalid section. Please choose from clothes, supplies, or appliances.")
+
+# Checkout
+    checkout(amount, clothes_items, school_supplies, appliances, cart, sale_items)
+
+# Shopping section functions
+def shop_clothes(total, clothes_items, sale_items, cart):
+    return shop_generic(total, clothes_items, sale_items, cart, "clothes")
 
 def shop_school_supplies(total, school_supplies, sale_items, cart):
-    supply_item = input("What school supplies would you like to buy from? Enter item (or type 'Done' to finish):").lower()
-    
-    while True:
-        if supply_item == 'done':
-            break
-        while supply_item not in school_supplies: 
-            supply_item = input("This item is not in the store. Try again: ").lower() 
-        quantity = input("How many would you like to buy? ") 
-        try: 
-            quantity = float(quantity) # Convert quantity to float 
-        except ValueError: 
-            print("Please enter a valid number for quantity.") 
-            continue 
-        if supply_item in cart: 
-            cart[supply_item] += quantity 
-        else: 
-            cart[supply_item] = quantity 
-        if(supply_item in sale_items):
-            print("You have a sale item")
-            add_off_sale_cart(total, quantity, school_supplies, sale_items, supply_item)
+    return shop_generic(total, school_supplies, sale_items, cart, "school supplies")
+
+def shop_appliances(total, appliances, sale_items, cart):
+    return shop_generic(total, appliances, sale_items, cart, "appliances")
+
+def shop_generic(total, items, sale_items, cart, section_name):
+    item = input(f"What {section_name} would you like to buy? Enter item (or type 'done' to finish): ").lower()
+    while item != 'done':
+        if item not in items:
+            item = input("This item is not in the store. Try again: ").lower()
+            continue
+        try:
+            quantity = float(input("How many would you like to buy? "))
+        except ValueError:
+            print("Please enter a valid number for quantity.")
+            continue
+        cart[item] = cart.get(item, 0) + quantity
+        if item in sale_items:
+            print("This item is on sale!")
+            total += (items[item] - (items[item] * sale_items[item])) * quantity
         else:
-            total += school_supplies[supply_item] * float(quantity) 
-        supply_item = input("Is there anything supplies else you would like to buy from? (type 'Done' to finish): ").lower()
+            total += items[item] * quantity
+        item = input(f"Is there anything else you would like to buy? (type 'done' to finish): ").lower()
+    return total
 
-
+# Drop function
 def drop(amount, total, items, sale_items, cart):
-    print("Seems like you need to drop an item")
-    
-    drop_item=input("Which item would like to drop?")
-    while drop_item != "Done" or total > amount:
-        while not drop_item in cart.keys():
-            drop_item = input("That item is not in your cart. You need drop an item from your cart.")
-        drop_quantity = input("How many would like to drop?")
-        while(drop_quantity > cart[drop_item]):
-            drop_quantity = input("You don't have that much "+ str(drop_item) + " in your cart. Try again.")
+    drop_item = None
+    while total > amount:
+        print(f"Current total: {round(total, 2)} | Budget: {round(amount, 2)}")
+        drop_item = input("Which item would you like to remove? ").lower()
+        if drop_item not in cart or cart[drop_item] <= 0:
+            print("This item is not in your cart or you have none left to drop. Try again.")
+            continue
+
+        try:
+            drop_quantity = float(input(f"How many {drop_item}'s would you like to remove? "))
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
+
+        if drop_quantity > cart[drop_item]:
+            print(f"You don't have that many {drop_item}s in your cart. Try again.")
+            continue
+
         cart[drop_item] -= drop_quantity
-        if(drop_item in sale_items):
-            drop_off_sale(total, drop_quantity, items, sale_items, drop_item)
+        if cart[drop_item] <= 0:
+            del cart[drop_item]
+        if drop_item in sale_items:
+            total -= (items[drop_item] - (items[drop_item] * sale_items[drop_item])) * drop_quantity
         else:
-            total -= items[drop_item] * float(drop_quantity) 
-        drop_item = input("Is there anything else you would like to drop?")
-    
-  
-def add_off_sale_cart(total, quantity, items, sale_items, store_item):
-    total+=(items[store_item] - (sale_items[store_item] * items[store_item])) * quantity
+            total -= items[drop_item] * drop_quantity
 
-def drop_off_sale(total, drop_quantity,items, sales_items, store_item):
-    total-=(items[store_item] - (sales_items[store_item] * items[store_item])) * drop_quantity
-
-def checkout(amount, clothes_items, school_supplies, cart, sale_items):
-    print("Time for you checkout your items. Time to print out your receipt")
-    item_total = 0
+        print(f"Updated total: {round(total, 2)}")
+        if total <= amount:
+            print("Your total is now within budget.")
+            break
+    return total
+# Checkout function
+def checkout(amount, clothes_items, school_supplies, appliances, cart, sale_items):
+    print("Time for you to checkout. Printing receipt...")
     total = 0
-    for cart_key in cart.keys():
-        if(cart_key in sale_items):
-            if(cart_key in clothes_items):
-                item_total += (cart[cart_key] * (clothes_items[cart_key] - (clothes_items[cart_key] * sale_items[cart_key])))
-            elif(cart_key in school_supplies):
-                item_total += (cart[cart_key] * (school_supplies[cart_key] - (school_supplies[cart_key] * sale_items[cart_key])))
+    for item, quantity in cart.items():
+        if item in clothes_items:
+            price = clothes_items[item]
+        elif item in school_supplies:
+            price = school_supplies[item]
+        elif item in appliances:
+            price = appliances[item]
         else:
-            if(cart_key in clothes_items):
-                item_total += cart[cart_key] * clothes_items[cart_key]
-            elif(cart_key in school_supplies):
-                item_total += cart[cart_key] * school_supplies[cart_key]
-        print(str(cart[cart_key]) + " " + str(cart_key) + " "+ str(round(item_total, 2)))
+            continue
+        if item in sale_items:
+            price -= price * sale_items[item]
+
+        item_total = price * quantity
         total += item_total
-        item_total = 0
-    
-    amount -= total
-    print("Your total for purchase: "+str(round(total, 2)))
-    print("You are left with "+str(round(amount, 2))+ " Thank you for shopping")
+        print(f"{quantity} {item} {round(price, 2)} each: {round(item_total, 2)}")
 
+    print(f"Total: {round(total, 2)}")
+    print(f"Remaining budget: {round(amount - total, 2)}")
+    print("Thank you for shopping!")
 
+# Main function
 def main():
     print("Hello, welcome to the shop.")
-    amount = random.uniform(100.0, 5000.0) 
-    amount = round(amount, 2)
-    print("You have "+str(amount)+" with you")
+    amount = round(random.uniform(0, 500.0), 2)
+    print(f"You have ${amount} with you.")
     shopping(amount)
 
 main()
