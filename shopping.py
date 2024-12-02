@@ -14,12 +14,18 @@ def shopping(amount):
         'refrigerator': 599.99, 'air-conditioning': 479.99, 'microwave': 84.99,
         'dishwasher': 349.79, 'fan': 51.99, 'tv': 1089.99
     }
+    furniture = {
+        'chairs': 25.89, 'sofa': 301.99, 'tables': 40.79, 'bed:': 539.98, 'drawers': 55.69, 
+        'cabinets': 61.99, 'shelves': 115.68, 'closet': 150.59
+    }
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
         'long-sleeve-shirts': 0.1, 'vests': 0.16, 'short-sleeve-jackets': 0.225,
         'binders': 0.10, 'refrigerator': 0.25, 'air-conditioning': 0.15,
-        'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30
+        'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30,
+        'chairs':0.025, 'sofa':0.15, 'tables':0.075, 'bed':0.15, 'drawers':0.075, 'cabinets':0.05,
+        'shelves': 0.1, 'closet':0.125 
     }
     cart = {}
     total = 0
@@ -33,6 +39,8 @@ def shopping(amount):
             total = shop_school_supplies(total, school_supplies, sale_items, cart)
         elif section == 'appliances':
             total = shop_appliances(total, appliances, sale_items, cart)
+        elif section  == 'furniture':
+            total = shop_furniture(total, furniture, sale_items, cart)
         else:
             print("Invalid section. Please choose from clothes, supplies, or appliances.")
         section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
@@ -53,11 +61,13 @@ def shopping(amount):
                 total = drop(amount, total, school_supplies, sale_items, cart)
             elif drop_section == 'appliances':
                 total = drop(amount, total, appliances, sale_items, cart)
+            elif drop_section == 'furniture':
+                total = drop(amount, total, furniture, sale_items, cart)
             else:
                 print("Invalid section. Please choose from clothes, supplies, or appliances.")
 
 # Checkout
-    checkout(amount, clothes_items, school_supplies, appliances, cart, sale_items)
+    checkout(amount, clothes_items, school_supplies, appliances, furniture, cart, sale_items)
 
 # Shopping section functions
 def shop_clothes(total, clothes_items, sale_items, cart):
@@ -68,6 +78,9 @@ def shop_school_supplies(total, school_supplies, sale_items, cart):
 
 def shop_appliances(total, appliances, sale_items, cart):
     return shop_generic(total, appliances, sale_items, cart, "appliances")
+
+def shop_furniture(total, furniture, sale_items, cart):
+    return shop_generic(total, furniture, sale_items, cart, "furniture")
 
 def shop_generic(total, items, sale_items, cart, section_name):
     item = input(f"What {section_name} would you like to buy? Enter item (or type 'done' to finish): ").lower()
@@ -123,7 +136,7 @@ def drop(amount, total, items, sale_items, cart):
             break
     return total
 # Checkout function
-def checkout(amount, clothes_items, school_supplies, appliances, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, appliances, furniture, cart, sale_items):
     print("Time for you to checkout. Printing receipt...")
     total = 0
     for item, quantity in cart.items():
@@ -133,6 +146,8 @@ def checkout(amount, clothes_items, school_supplies, appliances, cart, sale_item
             price = school_supplies[item]
         elif item in appliances:
             price = appliances[item]
+        elif item in furniture:
+            price = furniture[item]
         else:
             continue
         if item in sale_items:
