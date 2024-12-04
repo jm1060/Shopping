@@ -18,6 +18,9 @@ def shopping(amount):
         'chairs': 25.89, 'sofa': 301.99, 'tables': 40.79, 'bed:': 539.98, 'drawers': 55.69, 
         'cabinets': 61.99, 'shelves': 115.68, 'closet': 150.59
     }
+    electronics = {
+        'computer': 309.99, 'phone':151.98, 'headphones': 78.79, 'game-console':230.59
+    }
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
@@ -41,6 +44,8 @@ def shopping(amount):
             total = shop_appliances(total, appliances, sale_items, cart)
         elif section  == 'furniture':
             total = shop_furniture(total, furniture, sale_items, cart)
+        elif section == 'electronics':
+            total = shop_electronics(total, electronics, sale_items, cart)
         else:
             print("Invalid section. Please choose from clothes, supplies, or appliances.")
         section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
@@ -81,6 +86,9 @@ def shop_appliances(total, appliances, sale_items, cart):
 
 def shop_furniture(total, furniture, sale_items, cart):
     return shop_generic(total, furniture, sale_items, cart, "furniture")
+
+def shop_electronics(total, electronics, sale_items, cart):
+    return shop_generic(total, electronics, sale_items, cart, "electronics")
 
 def shop_generic(total, items, sale_items, cart, section_name):
     item = input(f"What {section_name} would you like to buy? Enter item (or type 'done' to finish): ").lower()
