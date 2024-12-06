@@ -28,13 +28,13 @@ def shopping(amount):
         'binders': 0.10, 'refrigerator': 0.25, 'air-conditioning': 0.15,
         'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30,
         'chairs':0.025, 'sofa':0.15, 'tables':0.075, 'bed':0.15, 'drawers':0.075, 'cabinets':0.05,
-        'shelves': 0.1, 'closet':0.125 
+        'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1 
     }
     cart = {}
     total = 0
 
     # Shopping process
-    section = input("What section would you like to buy from? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
+    section = input("What section would you like to buy from? (clothes, supplies, appliances, furniture, electronics) or type 'done' to finish: ").lower()
     while section != 'done': 
         if section == 'clothes':
             total = shop_clothes(total, clothes_items, sale_items, cart)
@@ -68,11 +68,13 @@ def shopping(amount):
                 total = drop(amount, total, appliances, sale_items, cart)
             elif drop_section == 'furniture':
                 total = drop(amount, total, furniture, sale_items, cart)
+            elif drop_section == 'electronics':
+                total = drop(amount, total, electronics, sale_items, cart)
             else:
                 print("Invalid section. Please choose from clothes, supplies, or appliances.")
 
 # Checkout
-    checkout(amount, clothes_items, school_supplies, appliances, furniture, cart, sale_items)
+    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, cart, sale_items)
 
 # Shopping section functions
 def shop_clothes(total, clothes_items, sale_items, cart):
@@ -144,7 +146,7 @@ def drop(amount, total, items, sale_items, cart):
             break
     return total
 # Checkout function
-def checkout(amount, clothes_items, school_supplies, appliances, furniture, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, cart, sale_items):
     print("Time for you to checkout. Printing receipt...")
     total = 0
     for item, quantity in cart.items():
@@ -156,6 +158,8 @@ def checkout(amount, clothes_items, school_supplies, appliances, furniture, cart
             price = appliances[item]
         elif item in furniture:
             price = furniture[item]
+        elif item in electronics:
+            price = electronics[item]
         else:
             continue
         if item in sale_items:
