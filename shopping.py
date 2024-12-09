@@ -31,7 +31,8 @@ def shopping(amount):
         'binders': 0.10, 'refrigerator': 0.25, 'air-conditioning': 0.15,
         'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30,
         'chairs':0.025, 'sofa':0.15, 'tables':0.075, 'bed':0.15, 'drawers':0.075, 'cabinets':0.05,
-        'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1 
+        'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1, 'basketball': 0.045,
+        'hockey-stick':.10, 'lacrosse-stick':0.1
     }
     cart = {}
     total = 0
@@ -49,6 +50,8 @@ def shopping(amount):
             total = shop_furniture(total, furniture, sale_items, cart)
         elif section == 'electronics':
             total = shop_electronics(total, electronics, sale_items, cart)
+        elif section == 'sports':
+            total = shop_sports_equip(total, sports, sale_items, cart)
         else:
             print("Invalid section. Please choose from clothes, supplies, or appliances.")
         section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
@@ -73,11 +76,13 @@ def shopping(amount):
                 total = drop(amount, total, furniture, sale_items, cart)
             elif drop_section == 'electronics':
                 total = drop(amount, total, electronics, sale_items, cart)
+            elif drop_section == 'sports':
+                total = drop(amount, total, sports, sale_items, cart)
             else:
                 print("Invalid section. Please choose from clothes, supplies, or appliances.")
 
 # Checkout
-    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, cart, sale_items)
+    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, cart, sale_items)
 
 # Shopping section functions
 def shop_clothes(total, clothes_items, sale_items, cart):
@@ -95,8 +100,11 @@ def shop_furniture(total, furniture, sale_items, cart):
 def shop_electronics(total, electronics, sale_items, cart):
     return shop_generic(total, electronics, sale_items, cart, "electronics")
 
+def shop_sports_equip(total, sports, sale_items, cart):
+    return shop_generic(total, sports, sale_items, cart, "sports")
+
 def shop_generic(total, items, sale_items, cart, section_name):
-    item = input(f"What {section_name} would you like to buy? Enter item (or type 'done' to finish): ").lower()
+    item = input(f"What {section_name} item would you like to buy? Enter item (or type 'done' to finish): ").lower()
     while item != 'done':
         if item not in items:
             item = input("This item is not in the store. Try again: ").lower()
@@ -149,7 +157,7 @@ def drop(amount, total, items, sale_items, cart):
             break
     return total
 # Checkout function
-def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, cart, sale_items):
     print("Time for you to checkout. Printing receipt...")
     total = 0
     for item, quantity in cart.items():
@@ -163,6 +171,8 @@ def checkout(amount, clothes_items, school_supplies, appliances, furniture, elec
             price = furniture[item]
         elif item in electronics:
             price = electronics[item]
+        elif item in sports:
+            price = sports[item]
         else:
             continue
         if item in sale_items:
