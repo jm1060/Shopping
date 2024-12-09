@@ -21,6 +21,9 @@ def shopping(amount):
     electronics = {
         'computer': 309.99, 'phone':151.98, 'headphones': 78.79, 'game-console':230.59
     }
+    sports = {'basketball': 13.42, 'soccer-ball':22.97, 'baseball': 24.95, 'bat': 39.99, 'bowling-ball': 46.99, 
+                'tennis-ball': 3.38, 'tennis-racket': 29.08, 'boxing-gloves':29.98, 'hockey-stick': 41.97, 'hockey-puck':2.50,
+                'lacrosse-stick':42.05, 'volleyball':27.15, 'dodgeball': 10.99, 'badminton-racket':30.91, 'football': 18.99}
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
