@@ -24,6 +24,8 @@ def shopping(amount):
     sports = {'basketball': 13.42, 'soccer-ball':22.97, 'baseball': 24.95, 'bat': 39.99, 'bowling-ball': 46.99, 
                 'tennis-ball': 3.38, 'tennis-racket': 29.08, 'boxing-gloves':29.98, 'hockey-stick': 41.97, 'hockey-puck':2.50,
                 'lacrosse-stick':42.05, 'volleyball':27.15, 'dodgeball': 10.99, 'badminton-racket':30.91, 'football': 18.99}
+    tools = {'screwdriver':10.85, 'nails': 5.97, 'hammer':12.91, 'wrench':19.86, 'saw':31.67, 'drill':33.85, 'tape-measure':7.96,
+        'gloves':4.93}
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
@@ -32,13 +34,13 @@ def shopping(amount):
         'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30,
         'chairs':0.025, 'sofa':0.15, 'tables':0.075, 'bed':0.15, 'drawers':0.075, 'cabinets':0.05,
         'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1, 'basketball': 0.045,
-        'hockey-stick':.10, 'lacrosse-stick':0.1
+        'hockey-stick':.10, 'lacrosse-stick':0.1, 'drill':0.15
     }
     cart = {}
     total = 0
 
     # Shopping process
-    section = input("What section would you like to buy from? (clothes, supplies, appliances, furniture, electronics) or type 'done' to finish: ").lower()
+    section = input("What section would you like to buy from? (clothes, supplies, appliances, furniture, electronics, sports) or type 'done' to finish: ").lower()
     while section != 'done': 
         if section == 'clothes':
             total = shop_clothes(total, clothes_items, sale_items, cart)
