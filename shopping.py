@@ -26,6 +26,9 @@ def shopping(amount):
                 'lacrosse-stick':42.05, 'volleyball':27.15, 'dodgeball': 10.99, 'badminton-racket':30.91, 'football': 18.99}
     tools = {'screwdriver':10.85, 'nails': 5.97, 'hammer':12.91, 'wrench':19.86, 'saw':31.67, 'drill':33.85, 'tape-measure':7.96,
         'gloves':4.93}
+    canned_food = {'canned-vegetables':3.99, 'canned-tomatoes':3.59, 'canned-fruit':3.89, 'canned-beans':3.92, 'canned-salmon':4.05,
+    'canned-tuna':4.05, 'canned-crab':3.99, 'canned-chicken': 4.49, 'canned-spam':5.99, 'canned-beets':3.49, 'canned-olives':3.39, 
+    'tomato-sauce':3.59, 'spaghetti-sauce':3.69}
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
@@ -34,7 +37,7 @@ def shopping(amount):
         'microwave': 0.05, 'dishwasher': 0.15, 'fan': 0.075, 'tv': 0.30,
         'chairs':0.025, 'sofa':0.15, 'tables':0.075, 'bed':0.15, 'drawers':0.075, 'cabinets':0.05,
         'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1, 'basketball': 0.045,
-        'hockey-stick':.10, 'lacrosse-stick':0.1, 'drill':0.15, 'saw':0.1
+        'hockey-stick':.10, 'lacrosse-stick':0.1, 'drill':0.15, 'saw':0.1, 'canned-spam':0.05
     }
     cart = {}
     total = 0
@@ -56,6 +59,8 @@ def shopping(amount):
             total = shop_sports_equip(total, sports, sale_items, cart)
         elif section == 'tools':
             total = shop_tools(total, tools, sale_items, cart)
+        elif section == 'canned-food':
+            total = shop_canned_food(total, canned_food, sale_items, cart)
         else:
             print("Invalid section. Please choose from clothes, supplies, or appliances.")
         section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
@@ -84,11 +89,13 @@ def shopping(amount):
                 total = drop(amount, total, sports, sale_items, cart)
             elif drop_section == 'tools':
                 total = drop(amount, total, tools, sale_items, cart)
+            elif drop_section == 'canned-food':
+                total = drop(amount, total, canned_food, sale_items, cart)
             else:
                 print("Invalid section. Please choose from clothes, supplies, or appliances.")
 
 # Checkout
-    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, cart, sale_items)
+    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, cart, sale_items)
 
 # Shopping section functions
 def shop_clothes(total, clothes_items, sale_items, cart):
@@ -108,6 +115,9 @@ def shop_electronics(total, electronics, sale_items, cart):
 
 def shop_sports_equip(total, sports, sale_items, cart):
     return shop_generic(total, sports, sale_items, cart, "sports")
+
+def shop_canned_food(total, canned_food, sale_items, cart):
+    return shop_generic(total, canned_food, sale_items, cart, "canned-food")
 def shop_tools(total, tools, sale_items, cart):
     return shop_generic(total, tools, sale_items, cart, "tools")
 def shop_generic(total, items, sale_items, cart, section_name):
@@ -164,7 +174,7 @@ def drop(amount, total, items, sale_items, cart):
             break
     return total
 # Checkout function
-def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, cart, sale_items):
     print("Time for you to checkout. Printing receipt...")
     total = 0
     for item, quantity in cart.items():
@@ -182,6 +192,8 @@ def checkout(amount, clothes_items, school_supplies, appliances, furniture, elec
             price = sports[item]
         elif item in tools:
             price = tools[item]
+        elif item in canned_food:
+            price = canned_food[item]
         else:
             continue
         if item in sale_items:
