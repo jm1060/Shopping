@@ -38,6 +38,8 @@ def shopping(amount):
     }
     meat = {'eggs':2.99, 'filet-mignon':32.28, 'new-york-strip':17.32, 'ribeye':17.39, 'chicken':12.99, 'pork-chop':10.67, 'pork-tenderloin':39.95,
      'lamb':19.99, 'veal':18.52, 'sausage':3.29, 'ground-beef':5.63,'turkey':26.20}
+    fish = {'snapper': 30.00, 'salmon':32.50, 'cod':18.44, 'tuna':199.99, 'flounder':25.99, 'haddock':14.95, 'catfish':6.99, 'halibut':295.95,
+            'swordfish':34.50, 'trout':21.98}
     sale_items = {
         'jackets': 0.1, 'sweater': 0.15, 't-shirts': 0.1, 'jeans': 0.20, 
         'sweatpants': 0.1, 'sneakers': 0.25, 'glasses': 0.1,
@@ -48,7 +50,7 @@ def shopping(amount):
         'shelves': 0.1, 'closet':0.125, 'computer': 0.1, 'game-console':0.1, 'basketball': 0.045,
         'hockey-stick':.10, 'lacrosse-stick':0.1, 'drill':0.15, 'saw':0.1, 'canned-spam':0.05,
         'brocoli':0.05, 'bok-choy':0.10, 'cake': 0.15, 'pie':0.05, 'filet-mignon':0.05, 'NY-Strip':0.05,
-        'pork-tenderloin':0.10
+        'pork-tenderloin':0.10, 'salmon':0.05, 'tuna':0.1, 'halibut':0.075
     }
     cart = {}
     total = 0
@@ -80,6 +82,8 @@ def shopping(amount):
             total = shop_bakery_goods(total, bakery, sale_items, cart)
         elif section == 'meat':
             total = shop_meat(total, meat, sale_items, cart)
+        elif section == 'fish':
+            total = shop_fish(total, fish, sale_items, cart)
         else:
             print("Invalid section. Please choose from clothes, supplies, or appliances.")
         section = input("Is there anything else you would like to buy? (clothes, supplies, appliances) or type 'done' to finish: ").lower()
@@ -113,16 +117,18 @@ def shopping(amount):
             elif drop_section == 'fruits':
                 total = drop(amount, total, fruits, sale_items, cart)
             elif drop_section == 'vegetables':
-                total = drop(amount, total, fruits, sale_items, cart)
+                total = drop(amount, total, vegetables, sale_items, cart)
             elif drop_section == 'bakery':
                 total = drop(amount, total, bakery, sale_items, cart)
             elif drop_section == 'meat':
                 total = drop(amount, total, meat, sale_items, cart)
+            elif drop_section == 'fish':
+                total = drop(amount, total, fish, sale_items, cart)
             else:
                 print("Invalid section. Please choose from clothes, supplies, or appliances.")
 
 # Checkout
-    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, fruits, vegetables, bakery, meat, cart, sale_items)
+    checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, fruits, vegetables, bakery, meat, fish, cart, sale_items)
 
 # Shopping section functions
 def shop_clothes(total, clothes_items, sale_items, cart):
@@ -160,6 +166,9 @@ def shop_tools(total, tools, sale_items, cart):
 
 def shop_meat(total, meat, sale_items, cart):
     return shop_generic(total, meat, sale_items, cart, "meat" )
+
+def shop_fish(total, fish, sale_items, cart):
+    return shop_generic(total, fish, sale_items, cart, "fish")
 
 def shop_generic(total, items, sale_items, cart, section_name):
     item = input(f"What {section_name} item would you like to buy? Enter item (or type 'done' to finish): ").lower()
@@ -215,7 +224,7 @@ def drop(amount, total, items, sale_items, cart):
             break
     return total
 # Checkout function
-def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, fruits, vegetables, bakery, meat, cart, sale_items):
+def checkout(amount, clothes_items, school_supplies, appliances, furniture, electronics, sports, tools, canned_food, fruits, vegetables, bakery, meat, fish, cart, sale_items):
     print("Time for you to checkout. Printing receipt...")
     total = 0
     for item, quantity in cart.items():
@@ -243,6 +252,8 @@ def checkout(amount, clothes_items, school_supplies, appliances, furniture, elec
             price = bakery[item]
         elif item in meat:
             price = meat[item]
+        elif item in fish:
+            price = fish[item]
         else:
             continue
         if item in sale_items:
