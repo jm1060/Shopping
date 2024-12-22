@@ -56,7 +56,7 @@ def shopping(amount):
     total = 0
 
     # Shopping process
-    section = input("What section would you like to buy from? (clothes, supplies, appliances, furniture, electronics, sports, tools, canned-food, fruits) or type 'done' to finish: ").lower()
+    section = input("What section would you like to buy from? (clothes, supplies, appliances, furniture, electronics, sports, tools, \ncanned-food, fruits, vegetables, bakery, meat, fish) or type 'done' to finish: ").lower()
     while section != 'done': 
         if section == 'clothes':
             total = shop_clothes(total, clothes_items, sale_items, cart)
